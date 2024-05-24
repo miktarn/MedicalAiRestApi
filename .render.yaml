@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: my-spring-boot-app
+    env: docker
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/PredictAiSpringRestAPI-0.0.1-SNAPSHOT.jar
