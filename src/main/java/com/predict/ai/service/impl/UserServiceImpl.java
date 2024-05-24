@@ -1,7 +1,7 @@
 package com.predict.ai.service.impl;
 
 import com.predict.ai.model.User;
-import com.predict.ai.model.dto.SaveUserDto;
+import com.predict.ai.model.dto.request.SaveUserDto;
 import com.predict.ai.repository.UserRepository;
 import com.predict.ai.service.UserService;
 import java.util.List;

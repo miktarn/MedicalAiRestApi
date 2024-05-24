@@ -1,6 +1,8 @@
 package com.predict.ai.controller;
 
+import com.predict.ai.model.dto.response.ResultResponseDto;
 import com.predict.ai.service.ResultService;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,11 @@ public class ResultsController {
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> findById(@PathVariable Long id) {
         return resultService.findByID(id);
+    }
+
+    @GetMapping("user/{userId}")
+    public List<ResultResponseDto> findAllResultsByUserId(@PathVariable Long userId) {
+        return resultService.findAllResultsByUserId(userId);
     }
 
 }
