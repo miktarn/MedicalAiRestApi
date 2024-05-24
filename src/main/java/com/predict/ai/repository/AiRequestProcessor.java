@@ -15,12 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class AiRequestProcessor {
-    @Value("${flask.url}")
-    private final String flaskUrl;
+    private static final String FLASK_URL = System.getenv("FLASK_URL");
+
     private final RestTemplate restTemplate;
 
-    public AiRequestProcessor(@Value("${flask.url}") String flaskUrl, RestTemplate restTemplate) {
-        this.flaskUrl = flaskUrl;
+    public AiRequestProcessor(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
@@ -33,7 +32,7 @@ public class AiRequestProcessor {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        return restTemplate.postForEntity(flaskUrl + "/upload-image", requestEntity, byte[].class);
+        return restTemplate.postForEntity(FLASK_URL + "/upload-image", requestEntity, byte[].class);
     }
 
     private static ByteArrayResource toByteArrayResource(MultipartFile file) {
