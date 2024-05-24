@@ -1,26 +1,16 @@
-# Используем официальный образ OpenJDK в качестве базового
-FROM openjdk:17-jdk-slim
-
-# Устанавливаем рабочую директорию
+#
+# Build stage
+#
+FROM maven:3.8.3-openjdk-17 AS build
 WORKDIR /app
+COPY . /app/
+RUN mvn clean package
 
-# Копируем файл pom.xml и папку src в контейнер
-COPY pom.xml ./
-COPY src ./src
-
-# Копируем Maven Wrapper (если он используется)
-COPY .mvn/ .mvn
-COPY mvnw ./
-
-# Выполняем команду Maven для скачивания зависимостей и сборки проекта
-RUN ./mvnw dependency:go-offline
-RUN ./mvnw clean package -DskipTests
-
-# Копируем скомпилированный JAR-файл в контейнер
-COPY target/PredictAiSpringRestAPI-0.0.1-SNAPSHOT.jar /app/app.jar
-
-# Открываем порт 8080 для доступа к приложению
+#
+# Package stage
+#
+FROM openjdk:17-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar /app/app.jar
 EXPOSE 8080
-
-# Запускаем приложение
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
