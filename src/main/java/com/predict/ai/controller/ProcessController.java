@@ -3,9 +3,9 @@ package com.predict.ai.controller;
 import com.predict.ai.service.ProcessService;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +35,8 @@ public class ProcessController {
     @GetMapping("/test")
     public ResponseEntity<byte[]> getTestImage() {
         try {
-            Path path = Paths.get("data/teddyBear.jpg");
-            byte[] imageBytes = Files.readAllBytes(path);
+            Resource resource = new ClassPathResource("data/teddyBear.jpg");
+            byte[] imageBytes = Files.readAllBytes(resource.getFile().toPath());
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(org.springframework.http.MediaType.IMAGE_JPEG);
